@@ -51,13 +51,13 @@ round-avatar: true
 # Uncomment the links you want to show and add your information to each one.
 social-network-links:
   email: "volengocthinh09@gmail.com"
-  rss: true  # remove this line if you don't want to show an RSS link at the bottom
+#  rss: true  # remove this line if you don't want to show an RSS link at the bottom
   facebook: thinhvln2006
   github: ngocthinh09
-  twitter: false
-  patreon: false
+#  twitter: false
+#  patreon: false
   youtube: "@thinhvolengoc5118"
-  whatsapp: false
+#  whatsapp: false
 #  medium: yourname
 #  reddit: yourname or r/yoursubreddit
 #  linkedin: daattali
@@ -96,9 +96,9 @@ rss-description: This website is a virtual proof that I'm awesome
 share-links-active:
   twitter: true
   facebook: true
-  linkedin: true
-  vk: false
-  reddit: false
+#  linkedin: true
+#  vk: false
+#  reddit: false
 
 # How to display the link to your website in the footer
 # Remove this if you don't want a link in the footer
