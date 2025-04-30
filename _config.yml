@@ -10,7 +10,7 @@
 ############################
 
 # Name of website
-title: ngocthinh09
+title: Cá Mập Cắn Cáp
 
 # Your name to show in the footer
 author: Võ Lê Ngọc Thịnh
@@ -20,11 +20,12 @@ author: Võ Lê Ngọc Thịnh
 ###############################################
 
 navbar-links:
+  Home: http://ngocthinh09.github.io
   About Me: "aboutme"
-  Resources:
-    - Beautiful Jekyll: "https://beautifuljekyll.com"
-    - Learn markdown: "https://www.markdowntutorial.com/"
-  Author's home: "https://deanattali.com"
+  # Resources:
+  #   - Beautiful Jekyll: "https://beautifuljekyll.com"
+  #   - Learn markdown: "https://www.markdowntutorial.com/"
+  # Author's home: "https://deanattali.com"
 
 ################
 # --- Logo --- #
@@ -50,13 +51,13 @@ round-avatar: true
 # You can change the order that they show up on the page by changing the order here.
 # Uncomment the links you want to show and add your information to each one.
 social-network-links:
-  email: "volengocthinh09@gmail.com"
 #  rss: true  # remove this line if you don't want to show an RSS link at the bottom
+  email: "volengocthinh09@gmail.com"
   facebook: thinhvln2006
   github: ngocthinh09
+  youtube: "@thinhvolengoc5118"
 #  twitter: false
 #  patreon: false
-  youtube: "@thinhvolengoc5118"
 #  whatsapp: false
 #  medium: yourname
 #  reddit: yourname or r/yoursubreddit
@@ -96,13 +97,13 @@ rss-description: This website is a virtual proof that I'm awesome
 share-links-active:
   twitter: true
   facebook: true
-#  linkedin: true
-#  vk: false
+  linkedin: false
+  vk: false
 #  reddit: false
 
 # How to display the link to your website in the footer
 # Remove this if you don't want a link in the footer
-url-pretty: "MyWebsite.com"
+url-pretty: "Home Page"
 
 # Add the website title to the title of every page
 title-on-all-pages: true
@@ -260,8 +261,10 @@ date_format: "%B %-d, %Y"
 #################################################################################
 
 # Output options (more information on Jekyll's site)
-timezone: "America/Toronto"
+timezone: "Asia/Ho_Chi_Minh"
 markdown: kramdown
+kramdown:
+  math_engine: katex
 highlighter: rouge
 permalink: /:year-:month-:day-:title/
 paginate: 5
@@ -284,6 +287,7 @@ defaults:
       path: "" # any file that's not a post will be a "page" layout by default
     values:
       layout: "page"
+      show_avatar: true
 
 # Exclude these files from production site
 exclude:
