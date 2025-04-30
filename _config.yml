@@ -97,8 +97,8 @@ rss-description: This website is a virtual proof that I'm awesome
 share-links-active:
   twitter: true
   facebook: true
-  linkedin: false
-  vk: false
+  # linkedin: false
+  # vk: false
 #  reddit: false
 
 # How to display the link to your website in the footer
@@ -106,7 +106,7 @@ share-links-active:
 url-pretty: "Home Page"
 
 # Add the website title to the title of every page
-title-on-all-pages: true
+title-on-all-pages: false
 
 # Excerpt word length - Truncate the excerpt of each post on the feed page to the specified number of words
 excerpt_length: 50
@@ -263,8 +263,6 @@ date_format: "%B %-d, %Y"
 # Output options (more information on Jekyll's site)
 timezone: "Asia/Ho_Chi_Minh"
 markdown: kramdown
-kramdown:
-  math_engine: katex
 highlighter: rouge
 permalink: /:year-:month-:day-:title/
 paginate: 5
@@ -287,7 +285,6 @@ defaults:
       path: "" # any file that's not a post will be a "page" layout by default
     values:
       layout: "page"
-      show_avatar: true
 
 # Exclude these files from production site
 exclude:
