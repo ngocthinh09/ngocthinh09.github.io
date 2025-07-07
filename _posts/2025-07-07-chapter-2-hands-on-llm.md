@@ -1,17 +1,15 @@
 ---
 layout: post
 title: Tokens and Embeddings - Phần 1
-subtitle: Tổng hợp kiến thức từ sách Hands-on Large Language Models - Tác giả Jay Alammar và Maarten Grootendorst
-gh-repo: daattali/beautiful-jekyll
-gh-badge: [star, fork, follow]
-tags: [test]
+subtitle: Tổng hợp kiến thức từ sách Hands-on Large Language Models - Jay Alammar & Maarten Grootendorst
+tags: [NLP, Tokenization]
 comments: true
 mathjax: true
 author: Ngọc Thịnh
 ---
 
 <figure>
-    <img src="https://hackmd.io/_uploads/Bk_3wKrSex.png">
+    <img src="ngocthinh09.github.io\assets\img\chapter-2-tokens-and-embeddings-part-1\figure-2.1.png">
     <figcaption>Language models xử lý văn bản dưới dạng những phần nhỏ gọi là token. Để model có thể "tính toán" được ngôn ngữ, nó cần chuyển các token thành các biểu diễn số học, gọi là embedding</figcaption>
 </figure>
 
@@ -23,7 +21,7 @@ Token không chỉ là đầu ra của model mà chúng cũng chính là cách m
 ### How Tokenizers Prepaid the Inputs to the Language Model
 Về tổng thể, generative LLMs nhận prompt đầu vào và sinh ra phản hồi.
 <figure>
-    <img src="https://hackmd.io/_uploads/HyMIjFBBlx.png">
+    <img src="ngocthinh09.github.io\assets\img\chapter-2-tokens-and-embeddings-part-1\figure-2.2.png">
 </figure>
 
 Tuy nhiên, trước khi prompt được đưa đến model, nó phải đi qua một bộ tokenizer, thứ sẽ chia prompt thành nhiều mảnh nhỏ.
