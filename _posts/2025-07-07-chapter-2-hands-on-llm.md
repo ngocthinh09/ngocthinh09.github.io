@@ -9,7 +9,7 @@ author: Ngọc Thịnh
 ---
 
 <figure>
-    <img src="ngocthinh09.github.io\assets\img\chapter-2-tokens-and-embeddings-part-1\figure-2.1.png">
+    <img src="../assets/img/chapter-2-tokens-and-embeddings-part-1/figure-2.1.png">
     <figcaption>Language models xử lý văn bản dưới dạng những phần nhỏ gọi là token. Để model có thể "tính toán" được ngôn ngữ, nó cần chuyển các token thành các biểu diễn số học, gọi là embedding</figcaption>
 </figure>
 
@@ -21,12 +21,12 @@ Token không chỉ là đầu ra của model mà chúng cũng chính là cách m
 ### How Tokenizers Prepaid the Inputs to the Language Model
 Về tổng thể, generative LLMs nhận prompt đầu vào và sinh ra phản hồi.
 <figure>
-    <img src="ngocthinh09.github.io\assets\img\chapter-2-tokens-and-embeddings-part-1\figure-2.2.png">
+    <img src="../assets/img/chapter-2-tokens-and-embeddings-part-1/figure-2.2.png">
 </figure>
 
 Tuy nhiên, trước khi prompt được đưa đến model, nó phải đi qua một bộ tokenizer, thứ sẽ chia prompt thành nhiều mảnh nhỏ.
 <figure>
-    <img src="https://hackmd.io/_uploads/SJygXqBSll.png">
+    <img src="../assets/img/chapter-2-tokens-and-embeddings-part-1/figure-2.3.png">
     <figcaption>Ví dụ minh họa về Tokenizer của GPT-4 trên nền tảng OpenAI</figcaption>
 </figure>
 
@@ -91,7 +91,7 @@ print(input_ids)
 Đầu vào mà các LLM phản hồi là một chuỗi số nguyên, mỗi số nguyên này là một ID duy nhất của một token cụ thể (character, word hoặc subword). Những ID này ánh xạ tới một bảng gồm các token mà tokenizer này biết.
 
 <figure>
-    <img src="https://hackmd.io/_uploads/H1UlfPLSgl.png">
+    <img src="../assets/img/chapter-2-tokens-and-embeddings-part-1/figure-2.4.png">
 </figure>
 
 Nếu chúng ta muốn kiểm các ID này, có thể sử dụng phương thức decode của tokenizer để có thể đổi từ ID sang text.
@@ -124,7 +124,7 @@ tensor([[ 1, 14350, 385, 4876, 27746, 5281, 304, 19235, 363, 278,
 ```
 
 <figure>
-    <img src="https://hackmd.io/_uploads/BkYKeF8rex.png">
+    <img src="../assets/img/chapter-2-tokens-and-embeddings-part-1/figure-2.5.png">
 </figure>
 
 Các token được generate ra ở phía sau token 32001 (<|assistant|>), token 3323 ("Sub") được theo sau bỏi token 622 ("ject") tạo thành từ "Subject". Giống như ở input, output được generate bởi model cũng là các ID token, ta cần sử phương thức decode của tokenizer để dịch sang văn bản thật sự.
@@ -151,7 +151,7 @@ Subword tokens khắc phục được nhược điểm vocabulary lớn của wo
 Phương pháp này chứa cả các từ đầy đủ lẫn các phần của từ (full and partial words). Một ưu điểm của phương pháp này là khả năng biểu diễn các từ mới bằng cách chia từ đó thành các phần nhỏ hơn.
 
 <figure>
-    <img src="https://hackmd.io/_uploads/HJ5N-FPBex.png">
+    <img src="../assets/img/chapter-2-tokens-and-embeddings-part-1/figure-2.6.png">
 </figure>
 
 - #### Character tokens
@@ -209,7 +209,7 @@ def show_tokens(sentence, tokenizer_name):
 
 Tokenized text:
 <figure>
-    <img src="https://hackmd.io/_uploads/H1IrCidree.png">
+    <img src="../assets/img/chapter-2-tokens-and-embeddings-part-1/bert-uncased-2018.png">
 </figure>
 
 BERT được phát hành với hai phiên bản chính:
@@ -232,7 +232,7 @@ Với phiên bản uncased phổ biến hơn, ta thấy những đặc điểm s
 
 Tokenized text:
 <figure>
-    <img src="https://hackmd.io/_uploads/BkfVG3urgg.png">
+    <img src="../assets/img/chapter-2-tokens-and-embeddings-part-1/bert-cased-2018.png">
 </figure>
 
 Phiên bản cased của BERT khác biệt chủ yếu ở chỗ nó bao gồm cả các token có chữ viết hoa.
@@ -252,7 +252,7 @@ Phiên bản cased của BERT khác biệt chủ yếu ở chỗ nó bao gồm c
 
 Tokenized text:
 <figure>
-    <img src="https://hackmd.io/_uploads/ryLk6eFSel.png">
+    <img src="../assets/img/chapter-2-tokens-and-embeddings-part-1/gpt-2.png">
 </figure>
 
 - Ký tự xuống dòng được biểu trong tokenizer
@@ -271,7 +271,7 @@ Tokenized text:
 
 Tokenized text
 <figure>
-    <img src="https://hackmd.io/_uploads/rJQ4nWFHee.png">
+    <img src="../assets/img/chapter-2-tokens-and-embeddings-part-1/flan-t5.png">
 </figure>
 
 Các model Flan-T5 sử dụng phương pháp SentencesPiece
@@ -292,7 +292,7 @@ Các model Flan-T5 sử dụng phương pháp SentencesPiece
 Tokenized text:
 
 <figure>
-    <img src="https://hackmd.io/_uploads/SJtxVfFHlx.png">
+    <img src="../assets/img/chapter-2-tokens-and-embeddings-part-1/gpt-4.png">
 </figure>
 
 Tokenizer GPT-4 hoạt động tương tự như tổ tiên của chúng. Một số điểm khác:
