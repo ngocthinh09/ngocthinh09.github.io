@@ -127,7 +127,7 @@ tensor([[ 1, 14350, 385, 4876, 27746, 5281, 304, 19235, 363, 278,
     <img src="../assets/img/chapter-2-tokens-and-embeddings-part-1/figure-2.5.png">
 </figure>
 
-Các token được generate ra ở phía sau token 32001 (<|assistant|>), token 3323 ("Sub") được theo sau bỏi token 622 ("ject") tạo thành từ "Subject". Giống như ở input, output được generate bởi model cũng là các ID token, ta cần sử phương thức decode của tokenizer để dịch sang văn bản thật sự.
+<p> Các token được generate ra ở phía sau token 32001 (<|assistant|>), token 3323 ("Sub") được theo sau bỏi token 622 ("ject") tạo thành từ "Subject". Giống như ở input, output được generate bởi model cũng là các ID token, ta cần sử phương thức decode của tokenizer để dịch sang văn bản thật sự. </p>
 
 ### How Does the Tokenzier Break Down Text?
 
@@ -246,9 +246,11 @@ Phiên bản cased của BERT khác biệt chủ yếu ở chỗ nó bao gồm c
     
 #### [GPT-2 (2019)](https://huggingface.co/openai-community/gpt2)
 
-- Tokenization: Byte Pair Encoding (BPE)
-- Vocabulary size: 50257
-- Special tokens: <|endoftext|>
+<ul>
+    <li>Tokenization: Byte Pair Encoding (BPE)</li>
+    <li>Vocabulary size: 50257</li>
+    <li>Special tokens: <code>&lt;|endoftext|&gt;</code></li>
+</ul>
 
 Tokenized text:
 <figure>
@@ -265,8 +267,8 @@ Tokenized text:
 - Vocabulary size: 32100
 - Special token:
     <ul>
-        <li>unk_token <unk></li>
-        <li>pad_token <pad></li>
+        <li>unk_token: <code>&lt;unk&gt;</code> (unknown token)</li>
+        <li>pad_token: <code>&lt;pad&gt;</code> (padding token)</li>
     </ul>
 
 Tokenized text
