@@ -8,8 +8,6 @@ mathjax: true
 author: Ngọc Thịnh
 ---
 
-# Tokens and Embedding Part 2
-
 ## Token Embeddings
 
 ### A Language Model Holds Embedding for the Vocabulary of Its Tokenizer
