@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Embeddings for Recommendation Systems
-subtitle: Ứng dụng Embeddings Model vào hệ thống gợi ý bài hát
-tags: [NLP, Embeddings]
+title: Tokens and Embeddings - Phần 3
+subtitle: Tổng hợp kiến thức từ sách Hands-on Large Language Models - Jay Alammar & Maarten Grootendorst
+tags: [NLP, Tokenization]
 comments: true
 mathjax: true
 author: Ngọc Thịnh
