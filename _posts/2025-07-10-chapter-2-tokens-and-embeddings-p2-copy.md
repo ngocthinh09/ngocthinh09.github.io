@@ -8,220 +8,153 @@ mathjax: true
 author: Ngọc Thịnh
 ---
 
-## Token Embeddings
+# Embeddings for Recommendation Systems
 
-### A Language Model Holds Embedding for the Vocabulary of Its Tokenizer
+Như đã đề cập ở trong blog trước, khái niệm về embeddings rất hữu ích cho nhiều lĩnh vực khác nhau. Trong thực tế, embeddings được sử dụng rộng rãi trong các hệ thống gợi ý (recommendation systems).
 
-Sau khi tokenizer được thiết lập và training, nó được sử dụng trong quá trình training language model đi kèm. Đó là lý do tại sao language models không thể sử dụng một tokenizer khác mà không training.
+## Recommending Songs by Embeddings
 
-<figure>
-    <img src="../assets/img/chapter-2-tokens-and-embeddings-part-2/figure-2.7.png">
-</figure>
-
-Language model giữ embedding vector cho mỗi token trong token vocabulary. Khi chúng ta tải một pretrained model về, một phần của model là embedding matrix, lưu trữ toàn bộ các embedding vector.
-
-Trước khi training model, weight của embedding vector được khởi tạo ngẫu nhiên tương tự như weight của model.
-
-### Creating Contextualized Word Embeddings with Language Models
-
-Ta đã tìm hiểu về token embeddings – yếu tố đầu vào của một language model, tuy nhiên các language model có thể tạo ra các token embedding tốt hơn, và chúng làm điều đó như thế nào?
+Trong phần này, ta sẽ sử dụng thuật toán word2vec để tạo embedding cho các bài hát, dựa trên danh sách phát (playlist) do con người tạo ra. Ta có thể tưởng tượng rằng mỗi bài hát như một từ (word hay token), và xem mỗi playlist như một câu. Và những embedding này được sử dụng để gợi ý các bài hát tương tự - tức là những bài hát thường xuất hiện cùng nhau trong một playlist.
 
 <figure>
-    <img src="../assets/img/chapter-2-tokens-and-embeddings-part-2/figure-2.8.png">
+    <img src="../assets/img/embeddings-for-recommendation-systems/figure-2.17.png">
 </figure>
 
-Thay vì biểu diễn mỗi token theo một vector tĩnh, language models tạo ra các vector biểu diễn từ theo ngữ cảnh (contextualized word embedding), tức là một token hay một từ sẽ được biểu diễn bằng các vector khác nhau tùy theo ngữ cảnh mà nó xuất hiện. Ngoài ra, chính các vector ngữ cảnh này cũng là nền tảng giúp vận hành các hệ thống tạo ảnh bằng AI như Midjourney, DALL-E, và Stable Diffusion.
+Bộ [dataset](https://www.cs.cornell.edu/~shuochen/lme/data_page.html) mà ta sẽ sử dụng được collect bởi Shuo Chen từ Cornell University. Nó bao gồm các playlist từ hàng trăm radio station trên khắp nước Mỹ.
 
-Làm thế nào để generate ra các contextualized word embedding ?
+Ta cùng xem kết quả của end-product mà ta sẽ build. Input là ID của một bài hát và output là các bài hát được gợi ý.
 
-```python
-from transformers import AutoModel, AutoTokenizer
-
-# Load a tokenizer
-tokenizer = AutoTokenizer.from_pretrained("microsoft/deberta-base")
-
-# Load a language model
-model = AutoModel.from_pretrained("microsoft/deberta-v3-xsmall")
-
-# Tokenize the sentence
-tokens = tokenizer('Hello world', return_tensors='pt')
-
-# Process the tokens
-output = model(**tokens)[0]
-```
-
-Model mà chúng ta đang sử dụng ở đây có tên là DeBERTa v3, nó là một trong language models đạt hiệu suất tốt nhất cho việc tạo ra token embeddings.
-
-Code này download pretrained tokenizer và model, ta sẽ sử dụng chúng để xử lý xâu "Hello world".
-
-```python
-output.shape
-```
-
-Output
-```python
-torch.Size([1, 4, 384])
-```
-
-Bỏ qua chiều thứ nhất, ta có thể đọc kết quả này như 4 tokens, mỗi token được biểu diễn bằng một vector có 384 giá trị. Chiều đầu tiên là chiều batch, được sử dụng trong trường hợp khi ta muốn gửi nhiều câu đầu vào cùng lúc vào mô hình (chúng được xử lý song song để tăng tốc độ).
-
-Nhưng tại sao nó lại có 4 tokens trong khi input chỉ có 2 từ?
-
-```python
-for token in tokens['input_ids'][0]:
-    print(tokenizer.decode(token))
-```
-
-Output
-
-```python
-[CLS]
-Hello
-world
-[SEP]
-```
-
-Tokenizer và model cụ thể này hoạt động bằng cách thêm token [CLS] vào đầu và [SEP] vào cuối.
-
-Language model đã xử lý trong text input. Kết quả:
-```python
-tensor([[
-[-3.3060, -0.0507, -0.1098, ..., -0.1704, -0.1618, 0.6932],
-[ 0.8918, 0.0740, -0.1583, ..., 0.1869, 1.4760, 0.0751],
-[ 0.0871, 0.6364, -0.3050, ..., 0.4729, -0.1829, 1.0157],
-[-3.1624, -0.1436, -0.0941, ..., -0.0290, -0.1265, 0.7954]
-]], grad_fn=<NativeLayerNormBackward0>)
-```
-<p> Đây là raw output của language model. Về mặt kĩ thuật, <b> bước đầu tiên </b> trong một language model là <b> việc chuyển đổi các Token ID thành các raw embedding</b>. </p>
+Ví dụ với bài hát có tên "Billie Jean" của Micheal Jackson, với ID là 3822:
 
 <figure>
-    <img src="../assets/img/chapter-2-tokens-and-embeddings-part-2/figure-2.9.png">
+    <img src="../assets/img/embeddings-for-recommendation-systems/figure-2.17.1.png">
 </figure>
 
-## Text Embeddings (for Sentences and Whole Documents)
+Nhìn có vẻ hợp lí, nhạc của Madonna, Prince và một vài bài khác của Micheal Jackson được gợi ý.
 
-Mặc dù token embedding là yếu tố cốt lõi trong cách các LLMs hoạt động, nhưng nhiều ứng dụng của LLM yêu cầu xử lý trên toàn bộ câu, đoạn văn hoặc thậm chí là tài liệu. Điều này dẫn đến sự ra đời của text embedding - tức là một vector duy nhất biểu diễn cho một đoạn văn bản dài hơn một token.
-
-Ta có thể xem các text embedding models nhận một đoạn văn bản và cuối cùng sinh ra một vector duy nhất biểu diễn cho đoạn text và lưu giữ lại ý nghĩa của đoạn text.
+Một ví dụ khác sang thể loại rap, ta cùng xem các bài tương tự với "California Love" của 2Pac.
 
 <figure>
-    <img src="../assets/img/chapter-2-tokens-and-embeddings-part-2/figure-2.10.png">
+    <img src="../assets/img/embeddings-for-recommendation-systems/figure-2.17.2.png">
 </figure>
 
-Có nhiều cách khác nhau để tạo ra một text embedding vector, một trong những cách phổ biến nhất là tính trung bình các giá trị của toàn bộ token embedding mà model sinh ra. Tuy nhiên, để đạt high-quality, các text embedding model được train chuyên biệt cho các tác vụ text embedding.
+## Training a Song Embedding Model
 
-Chúng ta có thể tạo text embedding với package **sentences-transformers**. Bonus, ở chương 4 cuốn sách, ta có thể tìm hiểu sâu hơn các chọn embedding model phù hợp từng tác vụ.
+Ta load dataset chứa playlists các bài hát và metadata như tên bài hát và tên tác giả.
 
 ```python
-from sentence_transfromers import SentenceTransformer
+import pandas as pd
+from urllib import request
 
-# Load model
-model = SentenceTransformer("sentence-transformers/all-mpnet-base-v2")
+# Get the playlist dataset file
+data = request.urlopen('https://storage.googleapis.com/maps-premium/dataset/yes_complete/train.txt')
 
-text = "Best movie ever!"
-# Convert text to text embeddings
-vector = model.encode(text)
+# Parse the playlist dataset file. Skip the first two lines as they only contain metadata
+lines = data.read().decode("utf-8").split('\n')[2:]
+
+# Remove playlists with only one song
+playlists = [line.rstrip().split() for line in lines if len(line.split()) > 1]
+
+# Load song metadata
+songs_file = request.urlopen('https://storage.googleapis.com/maps-premium/dataset/yes_complete/song_hash.txt')
+songs_file = songs_file.read().decode("utf-8").split('\n')
+songs = [song.rstrip().split('\t') for song in songs_file]
+songs_df = pd.DataFrame(data = songs,
+                        columns = ['id', 'title', 'artist'])
+songs_df = songs_df.set_index('id')
 ```
 
-Số lượng chiều trong embedding vector phụ thuộc vào embedding model nền tảng.
+Ta thử kiểm tra danh sách `playlists`. Mỗi phần từ bên trong nó là một playlist chứa ID các bài hát.
+
 ```python
-vector.shape
+print('Playlist #1:\n ', playlists[0], '\n')
+print('Playlist #2:\n ', playlists[1])
 ```
 
 Output:
-```plaintext
-(768, )
+```python
+Playlist #1:
+  ['0', '1', '2', '3', '4', '5', '6', ..., '76', '77', '59', '20', '43'] 
+
+Playlist #2:
+  ['78', '79', '80', '3', '62', ..., '49', '201', '100', '209', '210']
 ```
 
-Câu này đã được encode thành một vector với một chiều có 768 giá trị. 
-
-## Word Embeddings Beyond LLMs
-
-Embeddings hữu ích trên nhiều lĩnh vực, bao gồm recommeder engine và robotics. Trong phần này, ta sẽ tìm hiểu cách sử dụng model pretrained word2vec embeddings và đề cập đến cách mà model tạo ra word embedding.
-
-### Using pretrained Word Embeddings
-
-Ta sử dụng thư viện **gensim** để download pretrained word embeddings.
+Train model:
 
 ```python
-import gensim.downloader as api
+from gensim.models import Word2Vec
 
-# Download embeddings (66MB, glove, trained on wikipedia, vector size: 50)
-# Other options include "word2vec-google-news-300"
-# More options at https://github.com/RaRe-Technologies/gensim-data
-model = api.load("glove-wiki-gigaword-50")
+# Train our Word2vec model
+model = Word2Vec(
+    sentences = playlists,
+    vector_size = 32,
+    window = 20,
+    negative = 50,
+    min_count = 1,
+    workers = 4
+)
 ```
 
-Chúng ta có thể khám phá embedding space bằng cách xem các từ có nghĩa gần với từ được chỉ định
+Sau khi train model xong, ta có thể dùng các embeddings đó để tìm bài hát tương tự giống như ta làm với word:
 
 ```python
-model.most_similar([model['king']], topn=11)
+song_id = 2172
+
+# Ask the model for songs similar to song #2172
+model.wv.most_similar(positive=str(song_id))
 ```
 
 Output:
+
+```python
+[('3167', 0.9979482293128967),
+ ('2976', 0.9973394870758057),
+ ('6624', 0.9972985982894897),
+ ('2849', 0.996096670627594),
+ ('3117', 0.9960906505584717),
+ ('10084', 0.9959871172904968),
+ ('3094', 0.9959680438041687),
+ ('3126', 0.9956657290458679),
+ ('5634', 0.995656430721283),
+ ('6658', 0.9951207637786865)]
 ```
-[('king', 1.0),
- ('prince', 0.8236179351806641),
- ('queen', 0.7839043140411377),
- ('ii', 0.7746230363845825),
- ('emperor', 0.7736246585845947),
- ('son', 0.766719400882721),
- ('uncle', 0.7627150416374207),
- ('kingdom', 0.7542160749435425),
- ('throne', 0.7539914846420288),
- ('brother', 0.7492412328720093),
- ('ruler', 0.7434253692626953)]
+
+Danh sách những bài hát tương tự với bài hát ID số 2172. Thông tin metadata về bài hát ID 2172:
+
+```python
+print(songs_df.iloc[2172])
 ```
 
-### The Word2vec Algorithm and Contrastive Training
+Output:
+```python
+title     Fade To Black
+artist        Metallica
+Name: 2172 , dtype: object
+```
 
-Thuật toán word2vec được trình bày trong paper [ “Efficient estimation of word repre‐sentations in vector space”](https://arxiv.org/abs/1301.3781) và chi tiết ở [The Illustrated Word2vec](https://jalammar.github.io/illustrated-word2vec/). 
 
-Tương tự như LLMs, word2vec được train trên các ví dụ được sinh ra từ văn bản. Ví dụ, ta có một đoạn văn “Thou shalt not make a machine in the likeness of a human mind” từ tiểu thuyết Dune của Frank Herbert. Thuật toán sử dụng một cửa sổ trượt (sliding window) để tạo ra các ví dụ huấn luyện. Ví dụ, ta chọn kích thước của sliding window là 2, nghĩa là ta xét 2 từ lân cận mỗi bên của từ trung tâm. 
 
-Embedding vector được tạo ra từ một bài toán classification. Bài toán này được dùng để huấn luyện mạng noron dự đoán liệu rằng hai từ có cùng xuất hiện chung trong cùng một ngữ cảnh hay không (ngữ cảnh ở đây có nghĩa là: trong nhiều câu thuộc trainset, hai từ đó xuất hiện gần nhau). Ta có thể hình dung rằng mạng noron trả về 1 nếu chúng có xu hướng xuất hiện trong cùng một ngữ cảnh, ngược lại là 0.
+Thông tin metadata của các bài hát tương tự với bài hát ID 2172:
 
-Ví dụ, với vị trí của sliding window dưới đây, ta thấy từ "not" ở trung tâm, ta có thể tạo được 4 training examples.
+```python
+import numpy as np
 
-<figure>
-    <img src="../assets/img/chapter-2-tokens-and-embeddings-part-2/figure-2.11.png">
-</figure>
+def print_recommendations(song_id):
+    similar_songs = np.array(
+        model.wv.most_similar(positive=str(song_id), topn=5)
+    )[:, 0]
+    return songs_df.iloc[similar_songs]
 
-Với mỗi training example tạo ra, từ ở vị trí trung tâm được chọn làm input thứ nhất, và mỗi từ lân cận của nó là một đầu vào thứ hai riêng biệt trong từng training example. Ta kì vọng rằng sau khi model được train sẽ có khả năng phân loại mối quan hệ và trả về 1 nếu hai từ đầu vào thực sự là lân cận.
+print_recommendations(2172)
+```
 
-<figure>
-    <img src="../assets/img/chapter-2-tokens-and-embeddings-part-2/figure-2.12.png">
-</figure>
+Output:
 
-Tuy nhiên, nếu ta có dataset với giá trị target chỉ toàn là 1 thì model có thể "ăn gian" bằng cách trả về output là 1. Để khắc phục điều này, ta cần phải làm giàu dataset bằng cách thêm các **negative examples** (những example có hai từ không là lân cận của nhau).
-
-<figure>
-    <img src="../assets/img/chapter-2-tokens-and-embeddings-part-2/figure-2.13.png">
-</figure>
-
-Thực tế là ta không cần quá phức tạp khi tạo các negative examaples. Rất nhiều model hiệu quả chỉ dựa vào khả năng detect các positive examples từ các examples được tạo ngẫu nhiên (ý tưởng này gọi là [Noise-Contrastive Estimation](https://proceedings.mlr.press/v9/gutmann10a/gutmann10a.pdf)). Ta chỉ cần lấy các từ một cách ngẫu nhiên, thêm nó vào dataset và đánh target là 0.
-
-Ta đã làm quen được hai concept chính của word2vec:
-
-- Skip-gram: một phương pháp chọn các từ lân cận
-- Negative sampling: thêm các negative examples bằng cách chọn ngẫu nhiên từ tập dữ liệu.
-
-<figure>
-    <img src="../assets/img/chapter-2-tokens-and-embeddings-part-2/figure-2.14.png">
-</figure>
-
-Trước khi thực hiện train mạng noron trên tập dataset này, ta cần phải đưa ra một vài quyết định cho tokenizaton, ví dụ như các xử lý với chữ viết hoa, dấu câu và bao nhiêu token trong vocabulary.
-
-Mỗi token có một embedding vector được khởi tạo ngẫu nhiên (giống như cách khởi tạo weight cho mạng noron). 
-
-<figure>
-    <img src="../assets/img/chapter-2-tokens-and-embeddings-part-2/figure-2.15.png">
-</figure>
-
-Model được train dựa vào mỗi example, nhận hai embedding vector và dự đoán rằng nó có liên quan với nhau hay không.
-
-<figure>
-    <img src="../assets/img/chapter-2-tokens-and-embeddings-part-2/figure-2.16.png">
-</figure>
-
-Dựa vào kết quả dự đoán của model đúng hay sai, ta sẽ update embedding vector sao cho lần tới nếu model gặp lại example này, nó sẽ có cơ hội đoán đúng nhiều hơn. Và khi kết thúc quá trình traning, ta có các embedding vector tốt hơn cho tất cả các token trong vocabulary.
+|ID|Title|Artist|
+|--|-----|------|
+|3167|Unchained|Van Halen|
+|2976|I Don't Know|Ozzy Osbourne|
+|6624|Everybody Wants Some!!!|Van Halen|
+|2849|Run To The Hills|Iron Maiden|
+|3117|Still Of The Night|Whitesnake|
