@@ -1,4 +1,12 @@
-# Embeddings for Recommendation Systems
+---
+layout: post
+title: Embeddings for Recommendation Systems
+subtitle: Ứng dụng Embeddings Model vào hệ thống gợi ý bài hát
+tags: [NLP, Embeddings]
+comments: true
+mathjax: true
+author: Ngọc Thịnh
+---
 
 Như đã đề cập ở trong blog trước, khái niệm về embeddings rất hữu ích cho nhiều lĩnh vực khác nhau. Trong thực tế, embeddings được sử dụng rộng rãi trong các hệ thống gợi ý (recommendation systems).
 
