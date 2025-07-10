@@ -133,8 +133,6 @@ artist        Metallica
 Name: 2172 , dtype: object
 ```
 
-
-
 Thông tin metadata của các bài hát tương tự với bài hát ID 2172:
 
 ```python
