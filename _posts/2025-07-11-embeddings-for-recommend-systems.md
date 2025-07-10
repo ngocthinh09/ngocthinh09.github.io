@@ -150,11 +150,11 @@ print_recommendations(2172)
 Output:
 
 |ID|Title|Artist|
-|--|-----|------|
+|:-|-:|-:|
 |3167|Unchained|Van Halen|
 |2976|I Don't Know|Ozzy Osbourne|
 |6624|Everybody Wants Some!!!|Van Halen|
 |2849|Run To The Hills|Iron Maiden|
 |3117|Still Of The Night|Whitesnake|
 
-Toàn bộ source code nằm ở [đây](https://www.kaggle.com/code/thnhvlngc/recommending-songs-by-embeddings)
+Toàn bộ source code nằm ở [đây](https://www.kaggle.com/code/thnhvlngc/recommending-songs-by-embeddings).
