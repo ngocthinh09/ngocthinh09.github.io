@@ -153,6 +153,6 @@ Output:
 |--|-----|------|
 |3167|Unchained|Van Halen|
 |2976|I Don't Know|Ozzy Osbourne|
-|6624|Everybody Wants Some!!!|Van Halen
-|2849|Run To The Hills|Iron Maiden
-|3117|Still Of The Night|Whitesnake
+|6624|Everybody Wants Some!!!|Van Halen|
+|2849|Run To The Hills|Iron Maiden|
+|3117|Still Of The Night|Whitesnake|
