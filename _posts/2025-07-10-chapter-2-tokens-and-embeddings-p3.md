@@ -1,7 +1,6 @@
 ---
 layout: post
 title: Embeddings for Recommendation Systems
-subtitle: Tổng hợp kiến thức từ sách Hands-on Large Language Models - Jay Alammar & Maarten Grootendorst
 tags: [NLP, Tokenization]
 comments: true
 mathjax: true
@@ -152,7 +151,7 @@ print_recommendations(2172)
 Output:
 
 |ID|Title|Artist|
-|--|-----|------|
+|:-|:-|:-|
 |3167|Unchained|Van Halen|
 |2976|I Don't Know|Ozzy Osbourne|
 |6624|Everybody Wants Some!!!|Van Halen|
